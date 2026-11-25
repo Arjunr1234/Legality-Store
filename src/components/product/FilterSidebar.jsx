@@ -3,7 +3,7 @@ import { SlidersHorizontal, X } from 'lucide-react'
 
 import useBrands from '../../hooks/useBrands'
 import useCategories from '../../hooks/useCategories'
-import { INPUT_CLASS, LoadFailed, Loading, OptionList, Section } from './FilterComponents'
+import { INPUT_CLASS, LoadFailed, Loading, Option, OptionList, Section } from './FilterComponents'
 
 
 

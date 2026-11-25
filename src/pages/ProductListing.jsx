@@ -3,16 +3,9 @@ import { useEffect, useState } from 'react'
 import Header from '../components/common/Header'
 import FilterSidebar from '../components/product/FilterSidebar'
 import Products from '../components/product/Products'
-import useDebounce from '../hooks/useDebounce'
+import useFilterDraft from '../hooks/useFilterDraft'
 import useProductFilters from '../hooks/useProductFilters'
 import useProducts from '../hooks/useProducts'
-
-const toText = (value) => (value === null ? '' : String(value))
-
-const toPrice = (text) => {
-  const price = Number(text)
-  return text.trim() === '' || Number.isNaN(price) ? null : price
-}
 
 
 function ProductListing() {
@@ -31,29 +24,9 @@ function ProductListing() {
     refetch,
   } = useProducts(filters)
 
+  const { draft, updateDraft, clearDraft } = useFilterDraft(filters, updateFilters)
+
   const [isDrawerOpen, setDrawerOpen] = useState(false)
-
-  const [draft, setDraft] = useState({
-    q: filters.q,
-    minPrice: toText(filters.minPrice),
-    maxPrice: toText(filters.maxPrice),
-  })
-  const settled = useDebounce(draft, 450)
-
-  const updateDraft = (changes) => setDraft((current) => ({ ...current, ...changes }))
-
-  useEffect(() => {
-   
-    if (settled !== draft) return
-
-    const q = settled.q.trim()
-    const minPrice = toPrice(settled.minPrice)
-    const maxPrice = toPrice(settled.maxPrice)
-
-    if (q === filters.q && minPrice === filters.minPrice && maxPrice === filters.maxPrice) return
-
-    updateFilters({ q: q || null, minPrice, maxPrice })
-  }, [settled, draft, filters, updateFilters])
 
   // A deep link such as ?page=99 can land past the end of the result set.
   useEffect(() => {
@@ -62,7 +35,7 @@ function ProductListing() {
 
   const handleReset = () => {
     resetFilters()
-    setDraft({ q: '', minPrice: '', maxPrice: '' })
+    clearDraft()
     setDrawerOpen(false)
   }
 
