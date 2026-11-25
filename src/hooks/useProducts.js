@@ -6,17 +6,7 @@ import { PAGE_SIZE, PRODUCT_LIST_FIELDS, QUERY_KEYS } from '../utils/constants'
 import { applyClientFilters, buildProductQuery, paginate } from '../utils/productQuery'
 import { getTotalPages } from '../utils/pagination'
 
-/**
- * Fetches the product list for the current filter combination.
- *
- * Pagination is server-side (`limit`/`skip`) whenever DummyJSON can express
- * the whole filter on its own. As soon as a price or brand filter is applied —
- * neither of which the API supports — the hook fetches the full scope once and
- * filters + paginates in memory, so the result count and page links stay
- * correct. See `utils/productQuery.js` for the full rationale.
- *
- * @param {object} filters Output of `useProductFilters`.
- */
+
 const useProducts = (filters = {}) => {
   const { page = 1, pageSize = PAGE_SIZE } = filters
 
@@ -62,8 +52,7 @@ const useProducts = (filters = {}) => {
     }
 
     const filtered = applyClientFilters(raw, plan.clientFilters)
-    // Clamp before slicing: a deep link such as ?page=9 against 5 results must
-    // still show those 5, not an empty grid under "Showing 97 of 5 products".
+  
     const clamped = Math.min(page, getTotalPages(filtered.length, pageSize))
 
     return {
@@ -77,7 +66,7 @@ const useProducts = (filters = {}) => {
     ...query,
     products,
     total,
-    /** The page actually rendered — never past the end of the result set. */
+    
     page: safePage,
     totalPages: getTotalPages(total, pageSize),
     isEmpty: !query.isPending && !query.isError && total === 0,
