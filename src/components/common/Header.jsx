@@ -1,6 +1,8 @@
 import { Menu, Search, ShoppingCart, SlidersHorizontal, UserRound, X } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
+import logo from '../../assets/legality-icon.svg'
+
 
 const Header = ({ value = '', onChange, onSubmit, onToggleFilters }) => {
   const handleSubmit = (event) => {
@@ -33,9 +35,13 @@ const Header = ({ value = '', onChange, onSubmit, onToggleFilters }) => {
             <Menu size={22} />
           </button>
 
-          <Link to="/" className="flex flex-col leading-tight">
-            <span className="text-lg font-extrabold tracking-wider">LEEGALITY</span>
-            <span className="text-[10px] tracking-[3px] text-slate-300">STORE</span>
+          <Link to="/" className="flex items-center gap-2.5">
+            <img src={logo} alt="" className="h-9 w-9 shrink-0" />
+
+            <span className="flex flex-col leading-tight">
+              <span className="text-lg font-extrabold tracking-wider">LEEGALITY</span>
+              <span className="text-[10px] tracking-[3px] text-slate-300">STORE</span>
+            </span>
           </Link>
         </div>
 
