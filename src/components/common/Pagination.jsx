@@ -3,7 +3,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { buildPageItems } from '../../utils/pagination'
 
 const baseButton =
-  'inline-flex h-9 min-w-9 items-center justify-center gap-1 rounded-lg border px-3 text-sm font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-40'
+  'inline-flex h-9 min-w-9 cursor-pointer items-center justify-center gap-1 rounded-lg border px-3 text-sm font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-40'
 
 function Pagination({ currentPage, totalPages, onPageChange, disabled = false }) {
   if (totalPages <= 1) return null
