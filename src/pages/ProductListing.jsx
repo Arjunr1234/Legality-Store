@@ -1,16 +1,21 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from "react";
 
-import Header from '../components/common/Header'
-import FilterSidebar from '../components/product/FilterSidebar'
-import Products from '../components/product/Products'
-import useFilterDraft from '../hooks/useFilterDraft'
-import useProductFilters from '../hooks/useProductFilters'
-import useProducts from '../hooks/useProducts'
-
+import Header from "../components/common/Header";
+import FilterSidebar from "../components/product/FilterSidebar";
+import Products from "../components/product/Products";
+import useFilterDraft from "../hooks/useFilterDraft";
+import useProductFilters from "../hooks/useProductFilters";
+import useProducts from "../hooks/useProducts";
 
 function ProductListing() {
-  const { filters, updateFilters, setPage, toggleBrand, resetFilters, hasActiveFilters } =
-    useProductFilters()
+  const {
+    filters,
+    updateFilters,
+    setPage,
+    toggleBrand,
+    resetFilters,
+    hasActiveFilters,
+  } = useProductFilters();
 
   const {
     products,
@@ -22,22 +27,25 @@ function ProductListing() {
     isError,
     error,
     refetch,
-  } = useProducts(filters)
+  } = useProducts(filters);
 
-  const { draft, updateDraft, clearDraft } = useFilterDraft(filters, updateFilters)
+  const { draft, updateDraft, clearDraft } = useFilterDraft(
+    filters,
+    updateFilters,
+  );
 
-  const [isDrawerOpen, setDrawerOpen] = useState(false)
+  const [isDrawerOpen, setDrawerOpen] = useState(false);
 
   // A deep link such as ?page=99 can land past the end of the result set.
   useEffect(() => {
-    if (!isPending && !isError && filters.page > totalPages) setPage(1)
-  }, [filters.page, totalPages, isPending, isError, setPage])
+    if (!isPending && !isError && filters.page > totalPages) setPage(1);
+  }, [filters.page, totalPages, isPending, isError, setPage]);
 
   const handleReset = () => {
-    resetFilters()
-    clearDraft()
-    setDrawerOpen(false)
-  }
+    resetFilters();
+    clearDraft();
+    setDrawerOpen(false);
+  };
 
   const sidebar = (
     <FilterSidebar
@@ -50,7 +58,7 @@ function ProductListing() {
       hasActiveFilters={hasActiveFilters}
       onClose={() => setDrawerOpen(false)}
     />
-  )
+  );
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -62,7 +70,6 @@ function ProductListing() {
 
       <main className="mx-auto max-w-[1440px] px-[5%] py-6">
         <div className="flex gap-6">
-
           {/* Filters — static column on desktop */}
           <aside className="hidden w-64 shrink-0 self-start rounded-xl border border-gray-200 bg-white shadow-sm lg:block">
             {sidebar}
@@ -87,7 +94,6 @@ function ProductListing() {
               onResetFilters={hasActiveFilters ? handleReset : undefined}
             />
           </section>
-
         </div>
       </main>
 
@@ -107,7 +113,7 @@ function ProductListing() {
         </div>
       )}
     </div>
-  )
+  );
 }
 
-export default ProductListing
+export default ProductListing;

@@ -1,12 +1,16 @@
-import { useState } from 'react'
-import { SlidersHorizontal, X } from 'lucide-react'
+import { useState } from "react";
+import { SlidersHorizontal, X } from "lucide-react";
 
-import useBrands from '../../hooks/useBrands'
-import useCategories from '../../hooks/useCategories'
-import { INPUT_CLASS, LoadFailed, Loading, Option, OptionList, Section } from './FilterComponents'
-
-
-
+import useBrands from "../../hooks/useBrands";
+import useCategories from "../../hooks/useCategories";
+import {
+  INPUT_CLASS,
+  LoadFailed,
+  Loading,
+  Option,
+  OptionList,
+  Section,
+} from "./FilterComponents";
 
 function FilterSidebar({
   filters,
@@ -18,20 +22,19 @@ function FilterSidebar({
   hasActiveFilters,
   onClose,
 }) {
-  const { category, brands, minPrice, maxPrice } = filters
-  const [brandSearch, setBrandSearch] = useState('')
+  const { category, brands, minPrice, maxPrice } = filters;
+  const [brandSearch, setBrandSearch] = useState("");
 
-  const categories = useCategories()
-  const brandOptions = useBrands(category)
+  const categories = useCategories();
+  const brandOptions = useBrands(category);
 
-  const term = brandSearch.trim().toLowerCase()
+  const term = brandSearch.trim().toLowerCase();
   const visibleBrands = (brandOptions.data ?? []).filter((brand) =>
-    brand.toLowerCase().includes(term)
-  )
+    brand.toLowerCase().includes(term),
+  );
 
   return (
     <div className="flex h-full flex-col gap-6 overflow-y-auto bg-white p-5">
-
       <div className="flex items-center justify-between">
         <h2 className="flex items-center gap-2 text-base font-semibold text-gray-900">
           <SlidersHorizontal size={18} />
@@ -75,7 +78,7 @@ function FilterSidebar({
               type="radio"
               name="category"
               label="All categories"
-              checked={category === ''}
+              checked={category === ""}
               onChange={() => updateFilters({ category: null })}
             />
 
@@ -102,7 +105,9 @@ function FilterSidebar({
             placeholder="Min"
             aria-label="Minimum price"
             value={draft.minPrice}
-            onChange={(event) => onDraftChange({ minPrice: event.target.value })}
+            onChange={(event) =>
+              onDraftChange({ minPrice: event.target.value })
+            }
             className={INPUT_CLASS}
           />
 
@@ -115,7 +120,9 @@ function FilterSidebar({
             placeholder="Max"
             aria-label="Maximum price"
             value={draft.maxPrice}
-            onChange={(event) => onDraftChange({ maxPrice: event.target.value })}
+            onChange={(event) =>
+              onDraftChange({ maxPrice: event.target.value })
+            }
             className={INPUT_CLASS}
           />
         </div>
@@ -150,8 +157,8 @@ function FilterSidebar({
             {visibleBrands.length === 0 ? (
               <p className="text-xs text-gray-500">
                 {brandOptions.data.length === 0
-                  ? 'No brands listed for this category.'
-                  : 'No brands match that search.'}
+                  ? "No brands listed for this category."
+                  : "No brands match that search."}
               </p>
             ) : (
               <OptionList>
@@ -169,9 +176,8 @@ function FilterSidebar({
           </>
         )}
       </Section>
-
     </div>
-  )
+  );
 }
 
-export default FilterSidebar
+export default FilterSidebar;

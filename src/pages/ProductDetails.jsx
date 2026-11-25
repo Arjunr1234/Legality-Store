@@ -1,12 +1,12 @@
-import { useState } from 'react'
-import { useLocation, useNavigate, useParams, Link } from 'react-router-dom'
-import { ArrowLeft } from 'lucide-react'
+import { useState } from "react";
+import { useLocation, useNavigate, useParams, Link } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 
-import Header from '../components/common/Header'
-import ErrorState from '../components/common/ErrorState'
-import RatingStars from '../components/common/RatingStars'
-import useProductDetails from '../hooks/useProductDetails'
-import { formatDate, formatPrice, titleCase } from '../utils/formatters'
+import Header from "../components/common/Header";
+import ErrorState from "../components/common/ErrorState";
+import RatingStars from "../components/common/RatingStars";
+import useProductDetails from "../hooks/useProductDetails";
+import { formatDate, formatPrice, titleCase } from "../utils/formatters";
 
 const DetailSkeleton = () => (
   <div className="grid animate-pulse gap-8 md:grid-cols-2" aria-hidden="true">
@@ -18,33 +18,40 @@ const DetailSkeleton = () => (
       <div className="h-24 rounded bg-gray-200" />
     </div>
   </div>
-)
+);
 
 const Meta = ({ label, children }) => (
   <p className="text-sm text-gray-600">
     <span className="font-semibold text-gray-900">{label}:</span> {children}
   </p>
-)
-
+);
 
 function ProductDetails() {
-  const { id } = useParams()
-  const navigate = useNavigate()
-  const location = useLocation()
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const { data: product, isPending, isError, error, refetch } = useProductDetails(id)
-  const [activeImage, setActiveImage] = useState(0)
-  const [searchDraft, setSearchDraft] = useState('')
+  const {
+    data: product,
+    isPending,
+    isError,
+    error,
+    refetch,
+  } = useProductDetails(id);
+  const [activeImage, setActiveImage] = useState(0);
+  const [searchDraft, setSearchDraft] = useState("");
 
-  const cameFromInsideApp = location.key !== 'default'
+  const cameFromInsideApp = location.key !== "default";
 
   const handleBack = () => {
-    if (cameFromInsideApp) navigate(-1)
-    else navigate('/')
-  }
+    if (cameFromInsideApp) navigate(-1);
+    else navigate("/");
+  };
 
-  const images = product?.images?.length ? product.images : [product?.thumbnail].filter(Boolean)
-  const reviews = product?.reviews ?? []
+  const images = product?.images?.length
+    ? product.images
+    : [product?.thumbnail].filter(Boolean);
+  const reviews = product?.reviews ?? [];
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -52,7 +59,9 @@ function ProductDetails() {
         value={searchDraft}
         onChange={setSearchDraft}
         onSubmit={(value) =>
-          navigate(value.trim() ? `/?q=${encodeURIComponent(value.trim())}` : '/')
+          navigate(
+            value.trim() ? `/?q=${encodeURIComponent(value.trim())}` : "/",
+          )
         }
       />
 
@@ -75,15 +84,14 @@ function ProductDetails() {
               onRetry={refetch}
               title={
                 error?.status === 404
-                  ? 'This product does not exist'
-                  : 'We could not load this product'
+                  ? "This product does not exist"
+                  : "We could not load this product"
               }
             />
           )}
 
           {product && (
             <article className="grid gap-8 md:grid-cols-2">
-
               {/* Gallery */}
               <div>
                 <div className="flex h-80 items-center justify-center overflow-hidden rounded-lg bg-gray-50">
@@ -105,8 +113,8 @@ function ProductDetails() {
                         aria-current={index === activeImage}
                         className={`h-16 w-16 overflow-hidden rounded-lg border p-1 transition ${
                           index === activeImage
-                            ? 'border-blue-600 ring-1 ring-blue-600'
-                            : 'border-gray-200 hover:border-gray-400'
+                            ? "border-blue-600 ring-1 ring-blue-600"
+                            : "border-gray-200 hover:border-gray-400"
                         }`}
                       >
                         <img
@@ -122,17 +130,23 @@ function ProductDetails() {
 
               {/* Details */}
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">{product.title}</h1>
+                <h1 className="text-2xl font-bold text-gray-900">
+                  {product.title}
+                </h1>
 
                 <div className="mt-3 flex flex-wrap items-center gap-3">
                   <span className="text-3xl font-bold text-gray-900">
                     {formatPrice(product.price)}
                   </span>
-                  <RatingStars rating={product.rating} size="lg" count={reviews.length} />
+                  <RatingStars
+                    rating={product.rating}
+                    size="lg"
+                    count={reviews.length}
+                  />
                 </div>
 
                 <div className="mt-4 space-y-1">
-                  <Meta label="Brand">{product.brand ?? 'Not specified'}</Meta>
+                  <Meta label="Brand">{product.brand ?? "Not specified"}</Meta>
                   <Meta label="Category">
                     <Link
                       to={`/?category=${encodeURIComponent(product.category)}`}
@@ -142,7 +156,9 @@ function ProductDetails() {
                     </Link>
                   </Meta>
                   {product.availabilityStatus && (
-                    <Meta label="Availability">{product.availabilityStatus}</Meta>
+                    <Meta label="Availability">
+                      {product.availabilityStatus}
+                    </Meta>
                   )}
                 </div>
 
@@ -168,25 +184,29 @@ function ProductDetails() {
                             <span className="text-sm font-medium text-gray-900">
                               {review.reviewerName}
                             </span>
-                            <RatingStars rating={review.rating} showValue={false} />
+                            <RatingStars
+                              rating={review.rating}
+                              showValue={false}
+                            />
                             <span className="text-xs text-gray-400">
                               {formatDate(review.date)}
                             </span>
                           </div>
-                          <p className="mt-1 text-sm text-gray-600">{review.comment}</p>
+                          <p className="mt-1 text-sm text-gray-600">
+                            {review.comment}
+                          </p>
                         </li>
                       ))}
                     </ul>
                   </div>
                 )}
               </div>
-
             </article>
           )}
         </div>
       </main>
     </div>
-  )
+  );
 }
 
-export default ProductDetails
+export default ProductDetails;
